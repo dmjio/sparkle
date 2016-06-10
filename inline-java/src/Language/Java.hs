@@ -174,6 +174,7 @@ call obj mname args = do
     let argsings = map jtypeOf args
         retsing = sing :: Sing ty2
     klass <- findClass (nullTerminate (signatureStrip (signature (sing :: Sing ty1))))
+    print (nullTerminate (methodSignature argsings retsing))
     method <- getMethodID klass mname (nullTerminate (methodSignature argsings retsing))
     case retsing of
       SPrim "boolean" -> unsafeUncoerce . coerce <$> callBooleanMethod obj method args

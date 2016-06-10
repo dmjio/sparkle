@@ -9,10 +9,12 @@ main = do
     conf <- newSparkConf "Spark Online Latent Dirichlet Allocation in Haskell!"
     confSet conf "spark.hadoop.fs.s3n.awsAccessKeyId" "AKIAIKSKH5DRWT5OPMSA"
     confSet conf "spark.hadoop.fs.s3n.awsSecretAccessKey" "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"
-    sc   <- getOrCreate conf
-    sqlc <- newSQLContext sc
-    stopwords <- textFile sc "s3n://tweag-sparkle/stopwords.txt" >>= collect
-    docs <- wholeTextFiles sc "s3n://tweag-sparkle/nyt/"
+    sc   <- getOrCreateSparkContext conf
+    sqlc <- getOrCreateSQLContext sc
+    -- stopwords <- textFile sc "s3n://tweag-sparkle/stopwords.txt" >>= collect
+    -- docs <- wholeTextFiles sc "s3n://tweag-sparkle/nyt/"
+    stopwords <- textFile sc "/etc/passwd" >>= collect
+    docs <- wholeTextFiles sc "/etc/passwd"
         >>= justValues
         >>= zipWithIndex
     docsRows <- toRows docs
